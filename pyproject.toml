@@ -1,7 +1,7 @@
 [project]
-name = "ship2ship-detector"
+name = "sts-transfer-detector"
 version = "0.1.0"
-description = ""
+description = "Detect ship-to-ship cargo transfer using SAR imagery"
 authors = [
     {name = "Jordan Vinckevleugel"}
 ]
@@ -32,7 +32,10 @@ dependencies = [
 ]
 
 [tool.poetry]
-package-mode = false
+packages = [
+    {include = "sts_transfer"}
+]
+package-mode = true
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
