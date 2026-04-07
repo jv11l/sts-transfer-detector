@@ -7,6 +7,8 @@ IMAGE_DIR: Path = DATA_DIR / "images"
 RAW_IMAGE_DIR: Path = IMAGE_DIR / "raw"
 MASKED_IMAGE_DIR: Path = IMAGE_DIR / "masked"
 PROCESSED_IMAGE_DIR: Path = IMAGE_DIR / "processed"
+AIS_DIR: Path = DATA_DIR / "ais"
+SAMPLE_AIS_DIR: Path = AIS_DIR / "Spire_sample"
 GEODATA_DIR: Path = DATA_DIR / "World_EEZ_v12_20231025"
 
 # Constants

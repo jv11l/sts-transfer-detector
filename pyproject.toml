@@ -33,7 +33,7 @@ dependencies = [
 
 [tool.poetry]
 packages = [
-    {include = "sts_transfer"}
+    {include = "sts"}
 ]
 package-mode = true
 

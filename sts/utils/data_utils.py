@@ -14,7 +14,7 @@ def create_file_path(filename: str, dir: Path) -> Path:
     return path_to_file
 
 # Raster image 
-def load_raster_image(file: Path) -> np.ndarray:
+def load_raster_image(file: Path) -> tuple[np.ndarray, dict]:
     """Load raster image from TIFF image"""
     with rasterio.open(file) as src:
         band = src.read(1)
