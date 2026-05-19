@@ -48,6 +48,9 @@ def apply_mask_to_image(
                          "transform": out_transform})
     return out_image, out_meta
 
+def map_db_to_pixels(image: np.ndarray, db_range: tuple[int]) -> np.ndarray:
+    return out_image
+
 def save_raster_image(
     out_filename: str,
     out_dir: Path,

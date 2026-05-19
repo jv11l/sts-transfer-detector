@@ -9,8 +9,8 @@ from .data_utils import (
     transform_ocean_mask_to_image_crs
 )
 from .plot_utils import (
-    show_image,
-    plot_backscatter_distribution,
+    plot_image,
+    plot_distribution,
 )
 
 
@@ -21,8 +21,8 @@ __all__ = [
     "load_shapefile_into_gdf",
     "load_raster_image",
     "make_ocean_mask_for_area_of_interest",
-    "plot_backscatter_distribution",
+    "plot_distribution",
     "save_raster_image",
-    "show_image",
+    "plot_image",
     "transform_ocean_mask_to_image_crs",
 ]

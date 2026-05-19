@@ -1,5 +1,5 @@
 import os
-from sts_transfer.utils import (
+from sts.utils import (
     apply_mask_to_image,
     create_file_path,
     get_image_crs,
@@ -9,7 +9,7 @@ from sts_transfer.utils import (
     save_raster_image,
     transform_ocean_mask_to_image_crs,
 )
-from sts_transfer.config import (
+from sts.config import (
     MASKED_IMAGE_DIR,
     RAW_IMAGE_DIR,
     GEODATA_DIR,
@@ -31,10 +31,10 @@ def mask():
     )
     image_file = create_file_path(os.listdir(RAW_IMAGE_DIR)[1], RAW_IMAGE_DIR)
     print(f"Loading raster image {image_file}")
-    band, _ = load_raster_image(image_file)
+    band, meta = load_raster_image(image_file)
     print(band.shape)
     image_crs = get_image_crs(image_file)
-    print(f"Projecting ocean mask to the image CRS")
+    print(f"Projecting ocean mask to the image CRS: {meta['crs']}")
     gdf_ocean_mask = transform_ocean_mask_to_image_crs(image_crs, gdf_ocean_mask)
     print("Applying ocean mask to image")
     out_image, out_transform = apply_mask_to_image(image_file, gdf_ocean_mask)

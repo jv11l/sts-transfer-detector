@@ -36,7 +36,7 @@ results_path = 'data/results'
 def process_image(img: np.ndarray) -> np.ndarray:
     return ipc.stretch_image(img, *CLIP_MIN_MAX)
 
-
+    
 def get_tiles(img: np.ndarray) -> tuple:
     tiles = ipc.split_image(img)
     return utils.remove_land_tiles(tiles, MASK_THRESHOLD)
