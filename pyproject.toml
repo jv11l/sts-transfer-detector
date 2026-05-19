@@ -50,3 +50,30 @@ dashboard = [
 [build-system]
 requires = ["uv_build>=0.10.9,<0.11.0"]
 build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors (basic style: whitespace, indentation)
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes (logic errors: unused imports, undefined names)
+    "I",      # isort (import ordering)
+    "B",      # flake8-bugbear (common bugs and design problems)
+    "UP",     # pyupgrade (modernize syntax for your target Python)
+    "SIM",    # flake8-simplify (suggest simpler constructs)
+    "RUF",    # ruff-specific rules
+]
+ignore = [
+    "E501",   # line too long — the formatter handles this
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+"notebooks/*" = ["E402", "F401"]
+
+[tool.ruff.format]
+quote-style = "double"
