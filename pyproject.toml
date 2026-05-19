@@ -1,49 +1,51 @@
 [project]
 name = "sar-sts-detection"
 version = "0.1.0"
-description = "Detect ship-to-ship cargo transfer using SAR imagery"
-authors = [{ name = "Jordan Vinckevleugel" }]
-requires-python = ">=3.10"
+description = "Detecting ship-to-ship cargo transfers on SAR imagery"
 readme = "README.md"
+requires-python = ">=3.11,<3.12"
 license = { text = "MIT" }
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-]
+authors = [{ name = "Jordan Vinckevleugel" }]
+
 dependencies = [
+    "numpy>=1.26,<2.0",
+    "pandas>=2.2",
+    "hydra-core>=1.3",
+    "omegaconf>=2.3",
+    "pydantic>=2.6",
+    "pydantic-settings>=2.2",
+    "rasterio (>=1.4.3,<2.0.0)",
+    "shapely (>=2.1.1,<3.0.0)",
+    "pyproj (>=3.7.1,<4.0.0)",
+    "geopandas (>=1.1.0,<2.0.0)",
     "earthengine-api (>=1.5.20,<2.0.0)",
     "google-cloud-storage (>=3.1.0,<4.0.0)",
     "urllib3 (>=2.4.0,<3.0.0)",
-    "pandas (>=2.3.0,<3.0.0)",
-    "rasterio (>=1.4.3,<2.0.0)",
-    "pyproj (>=3.7.1,<4.0.0)",
-    "matplotlib (>=3.10.3,<4.0.0)",
-    "geopandas (>=1.1.0,<2.0.0)",
-    "shapely (>=2.1.1,<3.0.0)",
-    "numpy (==2.2.6)",
-    "geopy (>=2.4.1,<3.0.0)",
-    "dash (==3.0.4)",
-    "plotly (>=6.1.2,<7.0.0)",
-    "dash-bootstrap-components (>=2.0.3,<3.0.0)",
-    "dash-bootstrap-templates (>=2.1.0,<3.0.0)",
-    "geemap (>=0.35.3,<0.36.0)",
-    "seaborn (>=0.13.2,<0.14.0)",
-    "bokeh (>=3.7.3,<4.0.0)",
-    "dotenv (>=0.9.9,<0.10.0)",
-    "ipykernel (>=6.30.1,<7.0.0)",
+    "loguru>=0.7.3",
+    "tqdm>=4.67.3",
 ]
 
-[tool.uv]
-package = true
+[dependency-groups]
+dev = [
+    "ipykernel (>=6.30.1,<7.0.0)",
+    "jupyter>=1.1.1",
+    "geemap (>=0.35.3,<0.36.0)",
+    "matplotlib>=3.10.9",
+    "mypy>=2.1.0",
+    "pytest>=9.0.3",
+    "ruff>=0.15.13",
+    "seaborn>=0.13.2",
+]
 
-[tool.uv.build-backend]
-module-name = ["sts"]
-module-root = ""
-namespace = true
+[project.optional-dependencies]
+dashboard = [    
+    "bokeh (>=3.7.3,<4.0.0)",
+    "dash (==3.0.4)",
+    "dash-bootstrap-components (>=2.0.3,<3.0.0)",
+    "dash-bootstrap-templates (>=2.1.0,<3.0.0)",
+    "geopy (>=2.4.1,<3.0.0)",
+    "plotly (>=6.1.2,<7.0.0)",
+]
 
 [build-system]
 requires = ["uv_build>=0.10.9,<0.11.0"]
