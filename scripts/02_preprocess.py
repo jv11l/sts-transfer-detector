@@ -1,5 +1,5 @@
 import os
-from sts.utils import (
+from src.sts.utils import (
     apply_mask_to_image,
     create_file_path,
     get_image_crs,
@@ -9,7 +9,7 @@ from sts.utils import (
     save_raster_image,
     transform_ocean_mask_to_image_crs,
 )
-from sts.config import (
+from configs.config import (
     MASKED_IMAGE_DIR,
     RAW_IMAGE_DIR,
     GEODATA_DIR,

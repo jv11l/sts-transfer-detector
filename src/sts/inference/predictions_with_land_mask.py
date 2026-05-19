@@ -6,9 +6,9 @@ import pandas as pd
 from pathlib import Path
 import rasterio as rio
 
-import utils.geolocate.geo_utils as geos
-import preprocess.image_processing as ipc
-import utils.utils as utils
+import sts.utils.geo_utils as geos
+import sts.utils.image_processing as ipc
+import sts.utils.tiles as tiles
 import preprocess.land_mask as lmsk
 
 
@@ -39,7 +39,7 @@ def process_image(img: np.ndarray) -> np.ndarray:
     
 def get_tiles(img: np.ndarray) -> tuple:
     tiles = ipc.split_image(img)
-    return utils.remove_land_tiles(tiles, MASK_THRESHOLD)
+    return tiles.remove_land_tiles(tiles, MASK_THRESHOLD)
 
 
 def do_prediction(tiles_list: list, batch_size: int = BATCH_SIZE):
