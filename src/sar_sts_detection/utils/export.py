@@ -15,15 +15,15 @@ MAX_RETRIES = 5
 
 
 def export_image_to_gcs(
-        image: ee.Image,
-        # image_id: str,
-        bucket_name: str,
-        folder_name: str,
-        filename: str | None = None,
-        resolution: int = 10,
-        region_of_interest: list[float] | None = None,
-        export_format: str = 'GeoTIFF'
-        ) -> ee.batch.Task:
+    image: ee.Image,
+    # image_id: str,
+    bucket_name: str,
+    folder_name: str,
+    filename: str | None = None,
+    resolution: int = 10,
+    region_of_interest: list[float] | None = None,
+    export_format: str = "GeoTIFF",
+) -> ee.batch.Task:
     """
     Exports an image to Google Cloud Storage (GCS).
 
@@ -44,14 +44,14 @@ def export_image_to_gcs(
 
     if not filename:
         image_id = get_image_id(image)
-        filename = f'{folder_name}/{image_id}'
+        filename = f"{folder_name}/{image_id}"
 
     if not region_of_interest:
         region_of_interest = image.geometry()
 
     task = ee.batch.Export.image.toCloudStorage(
         image=image,
-        description='Export SAR Sentinel-1',
+        description="Export SAR Sentinel-1",
         bucket=bucket_name,
         fileNamePrefix=filename,
         scale=resolution,  # Resolution in m per pixel. Default: 1000
@@ -70,11 +70,11 @@ def get_task_status_with_retry(task, max_retries=MAX_RETRIES):
         try:
             return task.status()
         except (
-            requests.exceptions.ConnectionError, 
+            requests.exceptions.ConnectionError,
             urllib3.exceptions.ProtocolError,
             http.client.RemoteDisconnected,
-            ) as e:
-            print(f"Connection was dropped. Retry {i+1} of {max_retries}")
+        ) as e:
+            print(f"Connection was dropped. Retry {i + 1} of {max_retries}")
             time.sleep(5)  # Wait for 5 seconds before retrying
             continue
     print("Failed to get the task status after several retries")
@@ -86,11 +86,11 @@ def get_task_status(task):
 
 
 def get_task_id(task_status):
-    return task_status['id']
+    return task_status["id"]
 
 
 def get_task_state(task_status):
-    return task_status['state']
+    return task_status["state"]
 
 
 def get_task_status_from_id(task_id: str):
@@ -109,10 +109,10 @@ def update_task_statuses(tasks, task_statuses):
 
 
 def update_task_states_counts(task_statuses):
-        statuses = list(task_statuses.values())
-        counts = Counter(statuses)
-        counts_completed = counts['COMPLETED']
-        counts_failed = counts['FAILED']
-        counts_running = counts['RUNNING']
-        counts_ready = counts['READY']
-        return counts_completed, counts_failed, counts_running, counts_ready
+    statuses = list(task_statuses.values())
+    counts = Counter(statuses)
+    counts_completed = counts["COMPLETED"]
+    counts_failed = counts["FAILED"]
+    counts_running = counts["RUNNING"]
+    counts_ready = counts["READY"]
+    return counts_completed, counts_failed, counts_running, counts_ready

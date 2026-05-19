@@ -1,4 +1,12 @@
 import os
+
+from sar_sts_detection.config import (
+    AREA_OF_INTEREST,
+    COUNTRY,
+    GEODATA_DIR,
+    MASKED_IMAGE_DIR,
+    RAW_IMAGE_DIR,
+)
 from sar_sts_detection.utils.masks import (
     apply_mask_to_image,
     create_file_path,
@@ -9,25 +17,17 @@ from sar_sts_detection.utils.masks import (
     save_raster_image,
     transform_ocean_mask_to_image_crs,
 )
-from sar_sts_detection.config import (
-    MASKED_IMAGE_DIR,
-    RAW_IMAGE_DIR,
-    GEODATA_DIR,
-    AREA_OF_INTEREST,
-    COUNTRY
-)
+
 
 def mask():
-    eez_boundaries_file = create_file_path("eez_v12.shp", GEODATA_DIR)  # Downloaded from Martime Regions website
+    eez_boundaries_file = create_file_path(
+        "eez_v12.shp", GEODATA_DIR
+    )  # Downloaded from Martime Regions website
     print(f"Loading EEZ boundaries file {eez_boundaries_file}")
-    gdf_eez_boundaries = load_shapefile_into_gdf(
-        eez_boundaries_file
-    )
+    gdf_eez_boundaries = load_shapefile_into_gdf(eez_boundaries_file)
     print(f"Making ocean mask for the area {AREA_OF_INTEREST} in {COUNTRY}")
     gdf_ocean_mask = make_ocean_mask_for_area_of_interest(
-        gdf_eez_boundaries,
-        AREA_OF_INTEREST,
-        COUNTRY
+        gdf_eez_boundaries, AREA_OF_INTEREST, COUNTRY
     )
     image_file = create_file_path(os.listdir(RAW_IMAGE_DIR)[1], RAW_IMAGE_DIR)
     print(f"Loading raster image {image_file}")

@@ -20,7 +20,7 @@ CLIP_MIN_MAX = (-30, 0)
 FROM_GC_BUCKET = True
 CONFIDENCE_THRESHOLD = 0.5
 BATCH_SIZE = 64
-weights_path = 'runs/detect/train18/weights/best.torchscript'
+weights_path = "runs/detect/train18/weights/best.torchscript"
 
 
 def get_image(filename: str, preprocess: bool = True, plot: bool = False):
@@ -30,24 +30,22 @@ def get_image(filename: str, preprocess: bool = True, plot: bool = False):
         # bucket_id = os.environ['DV_BUCKET']
 
         # subprocess.run(f'gcsfuse --implicit-dirs {bucket_id} data/bucket', shell=True, executable="/bin/bash")
-        with rio.open('data/bucket/' + filename, 'r') as f:
+        with rio.open("data/bucket/" + filename, "r") as f:
             img = f.read(1)
             metadata = f.meta
-        print('download complete')
+        print("download complete")
 
     else:
-        with rio.open('data/download/' + filename, 'r') as f:
+        with rio.open("data/download/" + filename, "r") as f:
             img = f.read(1)
             metadata = f.meta
     if preprocess:
-
         # img = ipc.histogram_stretch(ipc.to_linear_magnitude(img, *CLIP_MIN_MAX), scale_factor=32)
         # img = ipc.quarter_power_stretch(ipc.to_linear_magnitude(img, *CLIP_MIN_MAX), scale_factor=8)
         img = ipc.stretch_image(img, *CLIP_MIN_MAX)
         # iemg = ipc.arctangent_stretch(ipc.to_linear_magnitude(img, *CLIP_MIN_MAX), scale_factor=4000)
 
     if plot:
-
         ipc.plot_img_and_hist(img)
 
     return img, metadata
@@ -64,24 +62,36 @@ def do_prediction(tiles_list: list, batch_size: int = BATCH_SIZE):
         batch_size = len(tiles_list)
 
     model = YOLO(weights_path)
-    results = model.predict(source=tiles_list, conf=CONFIDENCE_THRESHOLD, batch=batch_size, verbose=True)
+    results = model.predict(
+        source=tiles_list, conf=CONFIDENCE_THRESHOLD, batch=batch_size, verbose=True
+    )
 
     # batching the tiles_list and do the training
     results = []
     for i in range(len(tiles_list) // batch_size):
         results.extend(
-            model(tiles_list[i * batch_size : (i + 1) * batch_size], conf=CONFIDENCE_THRESHOLD, verbose=False)
+            model(
+                tiles_list[i * batch_size : (i + 1) * batch_size],
+                conf=CONFIDENCE_THRESHOLD,
+                verbose=False,
+            )
         )
 
     # predicting the last batch
     if len(tiles_list) / BATCH_SIZE % 1 != 0 and len(tiles_list) > BATCH_SIZE:
-        results.extend(model(tiles_list[(i + 1) * batch_size :], conf=CONFIDENCE_THRESHOLD, verbose=False))
+        results.extend(
+            model(
+                tiles_list[(i + 1) * batch_size :],
+                conf=CONFIDENCE_THRESHOLD,
+                verbose=False,
+            )
+        )
 
     return results
 
 
 def get_transformer(metadata: dict) -> pyproj.Transformer:
-    source_crs = pyproj.CRS(metadata['crs'])
+    source_crs = pyproj.CRS(metadata["crs"])
     target_crs = pyproj.CRS("EPSG:4326")
 
     # Create a transformer object
@@ -96,14 +106,16 @@ def predict(filename: str, plot=False):
 
     results = do_prediction(tiles_list)
     transformer = get_transformer(metadata)
-    ships_and_coords = geos.list_of_ships_and_coords_masked(results, metadata['transform'], transformer, list_of_idx)
+    ships_and_coords = geos.list_of_ships_and_coords_masked(
+        results, metadata["transform"], transformer, list_of_idx
+    )
 
-    csv_name = filename.split('/')[-1].split('.')[0]
+    csv_name = filename.split("/")[-1].split(".")[0]
     pred_df = pd.DataFrame(ships_and_coords)
-    pred_df.to_csv(f'data/mask_test.csv', index=False)
+    pred_df.to_csv(f"data/mask_test.csv", index=False)
     return pred_df
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     filename = sys.argv[1]
     predict(filename)

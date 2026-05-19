@@ -68,10 +68,22 @@ def show_splitter(splitter, alpha=0.2, area_buffer=0.2, show_legend=False):
     for polygon in polygon_iter:
         if isinstance(polygon.boundary, MultiLineString):
             for linestring in polygon.boundary:
-                ax.add_patch(PltPolygon(np.array(linestring), closed=True, facecolor=(0, 0, 0, 0), edgecolor="red"))
+                ax.add_patch(
+                    PltPolygon(
+                        np.array(linestring),
+                        closed=True,
+                        facecolor=(0, 0, 0, 0),
+                        edgecolor="red",
+                    )
+                )
         else:
             ax.add_patch(
-                PltPolygon(np.array(polygon.boundary.coords), closed=True, facecolor=(0, 0, 0, 0), edgecolor="red")
+                PltPolygon(
+                    np.array(polygon.boundary.coords),
+                    closed=True,
+                    facecolor=(0, 0, 0, 0),
+                    edgecolor="red",
+                )
             )
 
     bbox_list = splitter.get_bbox_list()
@@ -83,7 +95,14 @@ def show_splitter(splitter, alpha=0.2, area_buffer=0.2, show_legend=False):
         wgs84_bbox = bbox.transform(CRS.WGS84).get_polygon()
 
         tile_color = tuple(list(cm(i))[:3] + [alpha])
-        ax.add_patch(PltPolygon(np.array(wgs84_bbox), closed=True, facecolor=tile_color, edgecolor="green"))
+        ax.add_patch(
+            PltPolygon(
+                np.array(wgs84_bbox),
+                closed=True,
+                facecolor=tile_color,
+                edgecolor="green",
+            )
+        )
 
         if show_legend:
             legend_shapes.append(plt.Rectangle((0, 0), 1, 1, fc=cm(i)))

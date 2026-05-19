@@ -31,18 +31,18 @@ async def connect_ais_stream():
         # Send the subscirption message to Websocket. Must be sent within 3 sec!
         await websocket.send(subscribe_message_json)
 
-        csv_file = open('ais_data.csv', 'a', newline='')
+        csv_file = open("ais_data.csv", "a", newline="")
         writer = csv.writer(csv_file)
         HEADER = False
-        
+
         # Get messages from websocket
         async for message_json in websocket:
             global messages_batch
             message = json.loads(message_json)  # Convert JSON strings into py dict
             message_type = message["MessageType"]
-            
-            if message_type == 'PositionReport':
-                ais_message = message['Message']['PositionReport']
+
+            if message_type == "PositionReport":
+                ais_message = message["Message"]["PositionReport"]
                 header = ais_message.keys()
                 messages_batch.append(ais_message)
                 if not HEADER:
@@ -57,6 +57,6 @@ async def connect_ais_stream():
                     csv_file.close()
                     await websocket.close()
 
-       
+
 if __name__ == "__main__":
     asyncio.run(asyncio.run(connect_ais_stream()))

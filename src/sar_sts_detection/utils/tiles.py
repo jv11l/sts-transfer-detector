@@ -25,9 +25,9 @@ def get_image_via_thumbURL(index: int, coordinates: tuple, dates: tuple, multipl
         return image.updateMask(masked_image)
 
     if multiplier == 1:
-        dimensions = '640x640'
+        dimensions = "640x640"
     else:
-        dimensions = f'{640 * multiplier}x{640 * multiplier}'
+        dimensions = f"{640 * multiplier}x{640 * multiplier}"
 
     region_size = 2000 * multiplier
 
@@ -36,10 +36,10 @@ def get_image_via_thumbURL(index: int, coordinates: tuple, dates: tuple, multipl
     region = point.buffer(region_size).bounds()
     image = (
         (
-            ee.ImageCollection('COPERNICUS/S1_GRD')
-            .filter(ee.Filter.listContains('transmitterReceiverPolarisation', 'VV'))
-            .filter(ee.Filter.eq('instrumentMode', 'IW'))
-            .select('VV')
+            ee.ImageCollection("COPERNICUS/S1_GRD")
+            .filter(ee.Filter.listContains("transmitterReceiverPolarisation", "VV"))
+            .filter(ee.Filter.eq("instrumentMode", "IW"))
+            .select("VV")
             .filterDate(*dates)
             .map(mask_edge)
             .filter(ee.Filter.bounds(region))
@@ -49,15 +49,15 @@ def get_image_via_thumbURL(index: int, coordinates: tuple, dates: tuple, multipl
     )
 
     # Fetch the URL from which to download the image
-    url = image.getThumbURL({'dimensions': dimensions, 'min': -20, 'max': 0, 'format': 'jpg'})
+    url = image.getThumbURL({"dimensions": dimensions, "min": -20, "max": 0, "format": "jpg"})
 
     # Request the image
     r = requests.get(url, stream=True)
     if r.status_code != 200:
         raise r.raise_for_status()
 
-    filename = 'data/download/img_%05d.jpg' % index
-    with open(filename, 'wb') as out_file:
+    filename = "data/download/img_%05d.jpg" % index
+    with open(filename, "wb") as out_file:
         shutil.copyfileobj(r.raw, out_file)
     print("Done: ", index)
 
@@ -143,12 +143,12 @@ def download_all_tifs():
     None
     """
     client = storage.Client()
-    bucket = client.get_bucket(os.environ['DV_BUCKET'])
-    dir_list = [file for file in os.listdir('../data/download/') if file.endswith('.tif')]
+    bucket = client.get_bucket(os.environ["DV_BUCKET"])
+    dir_list = [file for file in os.listdir("../data/download/") if file.endswith(".tif")]
 
     for blob in bucket.list_blobs():
-        if blob.name.endswith('.tif') and blob.name not in dir_list:
-            blob.download_to_filename('../data/download/' + blob.name)
+        if blob.name.endswith(".tif") and blob.name not in dir_list:
+            blob.download_to_filename("../data/download/" + blob.name)
 
 
 def plot_tiles(tiles: list, n_rows, n_columns) -> None:
@@ -165,8 +165,8 @@ def plot_tiles(tiles: list, n_rows, n_columns) -> None:
 
     for i in range(n_rows):
         for j in range(n_columns):
-            axes[i, j].imshow(tiles[i][j], cmap='gray')
-            axes[i, j].axis('off')
+            axes[i, j].imshow(tiles[i][j], cmap="gray")
+            axes[i, j].axis("off")
 
     plt.tight_layout(pad=0.4, h_pad=0.2, w_pad=0.2)
     plt.show()
@@ -192,5 +192,5 @@ def remove_land_tiles(tiles, threshold):
             if tiles[i][j].mean() > threshold:
                 list_of_tiles.append(np.dstack([tiles[i][j], tiles[i][j], tiles[i][j]]))
                 list_of_idx.append((i, j))
-    print(f'The list contains {len(list_of_idx)} tiles.')
+    print(f"The list contains {len(list_of_idx)} tiles.")
     return list_of_idx, list_of_tiles

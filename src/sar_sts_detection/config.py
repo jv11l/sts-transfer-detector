@@ -18,4 +18,3 @@ COUNTRY: str = "Greece"
 
 if __name__ == "__main__":
     print(PROJECT_ROOT)
-    

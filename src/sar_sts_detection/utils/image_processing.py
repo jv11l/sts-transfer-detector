@@ -25,7 +25,7 @@ def normalize_image(db_img):
     cdf_m = np.ma.masked_equal(cdf, 0)
     cdf_m = (cdf_m - cdf_m.min()) * 255 / (cdf_m.max() - cdf_m.min())
     cdf = np.ma.filled(cdf_m, 0)
-    return cdf[(db_img + 100).astype('uint8')].astype('uint8')
+    return cdf[(db_img + 100).astype("uint8")].astype("uint8")
 
 
 def stretch_image(db_img: np.ndarray, min: int = -30, max: int = 0) -> np.ndarray:
@@ -44,7 +44,7 @@ def stretch_image(db_img: np.ndarray, min: int = -30, max: int = 0) -> np.ndarra
     cliped_image = np.clip(db_img, min, max)
     scaled_image = (cliped_image - min) * 255 / (max - min)
     scaled_image = np.nan_to_num(scaled_image, nan=0.0)
-    return (scaled_image).astype('uint8')
+    return (scaled_image).astype("uint8")
 
 
 def resize_image(image: np.ndarray) -> np.ndarray:
@@ -100,10 +100,10 @@ def plot_img_and_hist(img: np.ndarray, bins=256):
 
     fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(8, 4))
 
-    ax1.imshow(img, cmap='gray')
-    ax1.axis('off')
+    ax1.imshow(img, cmap="gray")
+    ax1.axis("off")
     ax2.hist(img.flatten(), bins=bins)
-    ax2.set_title('Histogram')
+    ax2.set_title("Histogram")
     ax2.set_xlim(0, 256)
 
     ax2.margins(0)
@@ -137,7 +137,7 @@ def histogram_stretch(img_linear: np.ndarray, scale_factor=8) -> np.ndarray:
     hs_img = np.clip(hs_img, 0, 255)
     hs_img = np.nan_to_num(hs_img, nan=255.0)
 
-    return hs_img.astype('uint8')
+    return hs_img.astype("uint8")
 
 
 def arctangent_stretch(img_linear, scale_factor=4000):
@@ -156,7 +156,7 @@ def arctangent_stretch(img_linear, scale_factor=4000):
     at_img = np.clip(at_img, 0, 255)
     at_img = np.nan_to_num(at_img, nan=255.0)
 
-    return at_img.astype('uint8')
+    return at_img.astype("uint8")
 
 
 def quarter_power_stretch(img_linear, scale_factor=4):
@@ -175,7 +175,7 @@ def quarter_power_stretch(img_linear, scale_factor=4):
     qp_img = np.clip(qp_img, 0, 255)
     qp_img = np.nan_to_num(qp_img, nan=255.0)
 
-    return qp_img.astype('uint8')
+    return qp_img.astype("uint8")
 
 
 def to_linear_magnitude(db_image, min=-30, max=0):

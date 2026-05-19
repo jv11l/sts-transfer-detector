@@ -2,11 +2,7 @@ from osgeo import gdal, osr
 from typing import Tuple
 
 
-def pixel_to_coordinates(
-    geotiff_file: str,
-    pixel_x: int,
-    pixel_y: int
-    ) -> Tuple[float, float]:
+def pixel_to_coordinates(geotiff_file: str, pixel_x: int, pixel_y: int) -> Tuple[float, float]:
     """
     Convert pixel coordinates to geographical coordinates.
 
@@ -23,15 +19,15 @@ def pixel_to_coordinates(
         ValueError: If the GeoTIFF file does not have a valid geotransform.
     """
     dataset = gdal.Open(geotiff_file)
-    
+
     if dataset is None:
         raise FileNotFoundError("Could not open GeoTIFF file")
-    
+
     geotransform = dataset.GetGeoTransform()
-    
+
     if geotransform is None:
         raise ValueError("GeoTIFF file does not have a valid geotransform")
-    
+
     origin_x = geotransform[0]
     origin_y = geotransform[3]
     pixel_width = geotransform[1]
