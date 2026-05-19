@@ -5,6 +5,7 @@ import numpy as np
 from pathlib import Path
 import rasterio
 from rasterio import CRS
+from rasterio.mask import mask as rasterio_mask
 from shapely.geometry import box
 
 
@@ -98,4 +99,80 @@ def get_image_metadata(file: Path) -> dict:
         raise FileExistsError("File not found")
     with rasterio.open(file) as img:
         return img.meta
+
+
+###================ Mask pipeline functions =================###
+
+def create_file_path(filename: str, dir: Path) -> Path:
+    path_to_file = dir / filename
+    if not path_to_file.exists():
+        raise FileExistsError("File not found")
+    return path_to_file
+
+
+def load_raster_image(file: Path) -> tuple[np.ndarray, dict]:
+    with rasterio.open(file) as src:
+        band = src.read(1)
+        meta = src.meta.copy()
+    return band, meta
+
+
+def load_shapefile_into_gdf(file: Path) -> gpd.GeoDataFrame:
+    if not file.exists():
+        raise FileExistsError("File not found.")
+    return gpd.read_file(file)
+
+
+def make_ocean_mask_for_area_of_interest(
+    eez_boundaries: gpd.GeoDataFrame,
+    area: list,
+    country: str,
+) -> gpd.GeoDataFrame:
+    country_filter = eez_boundaries["TERRITORY1"] == country
+    eez_country = eez_boundaries.loc[country_filter].copy()
+    eez_country = eez_boundaries.reset_index()
+    aoi_bbox = box(*area)
+    ocean_mask = gpd.clip(eez_country, mask=aoi_bbox)
+    if ocean_mask.empty:
+        raise ValueError("Geometry of the ocean mask is empty!")
+    return ocean_mask
+
+
+def transform_ocean_mask_to_image_crs(
+    image_crs: rasterio.CRS,
+    ocean_mask: gpd.GeoDataFrame,
+) -> gpd.GeoDataFrame:
+    return ocean_mask.to_crs(image_crs)
+
+
+def apply_mask_to_image(
+    file: Path,
+    ocean_mask: gpd.GeoDataFrame,
+) -> tuple[np.ndarray, dict]:
+    with rasterio.open(file) as src:
+        out_image, out_transform = rasterio_mask(
+            src,
+            ocean_mask.geometry,
+            nodata=np.nan,
+            crop=True,
+            indexes=1,
+        )
+        out_meta = src.meta.copy()
+        out_meta.update({
+            "driver": "GTiff",
+            "height": out_image.shape[0],
+            "width": out_image.shape[1],
+            "transform": out_transform,
+        })
+    return out_image, out_meta
+
+
+def save_raster_image(
+    out_filename: str,
+    out_dir: Path,
+    out_image: np.ndarray,
+    out_meta: dict,
+) -> None:
+    with rasterio.open(out_dir / out_filename, "w", **out_meta) as dest:
+        dest.write(out_image, 1)
     

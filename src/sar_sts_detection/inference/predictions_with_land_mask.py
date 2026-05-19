@@ -6,9 +6,9 @@ import pandas as pd
 from pathlib import Path
 import rasterio as rio
 
-import sts.utils.geo_utils as geos
-import sts.utils.image_processing as ipc
-import sts.utils.tiles as tiles
+import sar_sts_detection.utils.geo_utils as geos
+import sar_sts_detection.utils.image_processing as ipc
+import sar_sts_detection.utils.tiles as tiles
 import preprocess.land_mask as lmsk
 
 
