@@ -86,3 +86,11 @@ ignore_missing_imports = true
 warn_unused_ignores = true
 warn_redundant_casts = true
 warn_return_any = false
+
+[[tool.mypy.overrides]]
+module = "sar_ship_detection.utils.*"
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "sar_ship_detection.data.*"
+disallow_untyped_defs = true
