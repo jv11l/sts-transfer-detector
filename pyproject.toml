@@ -1,13 +1,19 @@
 [project]
-name = "sts-transfer-detector"
+name = "sar-sts-detection"
 version = "0.1.0"
 description = "Detect ship-to-ship cargo transfer using SAR imagery"
-authors = [
-    {name = "Jordan Vinckevleugel"}
-]
-license = {text = "MIT"}
-readme = "README.md"
+authors = [{ name = "Jordan Vinckevleugel" }]
 requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
 dependencies = [
     "earthengine-api (>=1.5.20,<2.0.0)",
     "google-cloud-storage (>=3.1.0,<4.0.0)",
@@ -31,12 +37,14 @@ dependencies = [
     "ipykernel (>=6.30.1,<7.0.0)",
 ]
 
-[tool.poetry]
-packages = [
-    {include = "sts"}
-]
-package-mode = true
+[tool.uv]
+package = true
+
+[tool.uv.build-backend]
+module-name = ["sts"]
+module-root = ""
+namespace = true
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.10.9,<0.11.0"]
+build-backend = "uv_build"
