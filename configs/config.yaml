@@ -1,0 +1,8 @@
+defaults:
+  - preprocessing: default
+  - _self_
+
+project:
+  name: sar-ship-detection
+  seed: 42
+  root_dir: ${hydra:runtime.cwd}

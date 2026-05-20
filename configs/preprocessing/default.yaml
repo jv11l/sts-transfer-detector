@@ -1,0 +1,3 @@
+masking:
+  bbox_aoi: [22.357, 36.373, 23.114, 36.846]  # [W, S, E, N]
+  country: Greece
