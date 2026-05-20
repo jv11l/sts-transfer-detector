@@ -35,10 +35,11 @@ dev = [
     "pytest>=9.0.3",
     "ruff>=0.15.13",
     "seaborn>=0.13.2",
+    "pre-commit>=4.6.0",
 ]
 
 [project.optional-dependencies]
-dashboard = [    
+dashboard = [
     "bokeh (>=3.7.3,<4.0.0)",
     "dash (==3.0.4)",
     "dash-bootstrap-components (>=2.0.3,<3.0.0)",
