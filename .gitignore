@@ -1,8 +1,11 @@
 # Local folders
-data/
+data/ais/
+data/masked/*
+data/raw/*
 docs/
-notebooks/
-resources/eez_geodata
+notebooks/*
+resources/eez_geodata/*
+resources/mask_geodata/*
 results/
 
 # VS Code
