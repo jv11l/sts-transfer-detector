@@ -28,6 +28,17 @@ def load_geodf(file: Path) -> gpd.GeoDataFrame:
     return gpd.read_file(file)
 
 
+def create_mask_gdf(
+    eez_shapefile: Path, aoi_bounds: tuple[float, float, float, float]
+) -> gpd.GeoDataFrame:
+    aoi_bbox = box(*aoi_bounds)
+    eez_gdf = gpd.read_file(eez_shapefile, bbox=aoi_bbox)
+    mask_gdf = gpd.clip(eez_gdf, mask=aoi_bounds)
+    if mask_gdf.empty:
+        raise ValueError("Mask geometry is empty!")
+    return mask_gdf
+
+
 def transform_mask_crs(
     dest_crs: rasterio.CRS,
     mask_gdf: gpd.GeoDataFrame,
@@ -68,16 +79,6 @@ def save_raster_image(
     with rasterio.open(out_dir / out_filename, "w", **out_meta) as dest:
         dest.write(out_image, 1)
 
-
-def create_mask_gdf(
-    eez_shapefile: Path, aoi_bounds: tuple[float, float, float, float]
-) -> gpd.GeoDataFrame:
-    aoi_bbox = box(*aoi_bounds)
-    eez_gdf = gpd.read_file(eez_shapefile, bbox=aoi_bbox)
-    mask_gdf = gpd.clip(eez_gdf, mask=aoi_bounds)
-    if mask_gdf.empty:
-        raise ValueError("Mask geometry is empty!")
-    return mask_gdf
 
 
 def preprocess_tile(

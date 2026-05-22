@@ -8,7 +8,7 @@ from sar_sts_detection.data.preprocessing import create_mask_gdf, preprocess_til
 def preprocess(cfg: DictConfig) -> None:
     """Create a mask to remove land from tile and apply mask to tile"""
     mask_gdf = create_mask_gdf(
-        eez_shapefile=cfg.resources.eez_geodata,
+        eez_shapefile=cfg.preprocessing.masking.shapefile,
         aoi_bounds=tuple(cfg.preprocessing.masking.aoi_bounds),
     )
 
