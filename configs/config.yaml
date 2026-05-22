@@ -14,4 +14,3 @@ paths:
 
 resources:
   eez_geodata: ${project.root_dir}/resources/eez_geodata/eez_v12.shp
-  mask_geodata: ${project.root_dir}/resources/mask_geodata/mask_aoi.shp

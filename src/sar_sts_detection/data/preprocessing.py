@@ -69,28 +69,27 @@ def save_raster_image(
         dest.write(out_image, 1)
 
 
-def create_mask(
-    src_file: Path, out_file: Path, aoi_bounds: tuple[float, float, float, float]
-) -> None:
+def create_mask_gdf(
+    eez_shapefile: Path, aoi_bounds: tuple[float, float, float, float]
+) -> gpd.GeoDataFrame:
     aoi_bbox = box(*aoi_bounds)
-    gdf_src = gpd.read_file(src_file, bbox=aoi_bbox)
-    gdf_mask = gpd.clip(gdf_src, mask=aoi_bounds)
-    if gdf_mask.empty:
+    eez_gdf = gpd.read_file(eez_shapefile, bbox=aoi_bbox)
+    mask_gdf = gpd.clip(eez_gdf, mask=aoi_bounds)
+    if mask_gdf.empty:
         raise ValueError("Mask geometry is empty!")
-    gdf_mask.to_file(filename=out_file)
+    return mask_gdf
 
 
 def preprocess_tile(
     input_folder: str,
     output_folder: str,
-    mask_geodata: str,
+    mask_gdf: gpd.GeoDataFrame,
 ) -> None:
-    gdf_mask = load_geodf(Path(mask_geodata))
     for tile in Path(input_folder).iterdir():
         _, meta = load_raster_file(tile)
         image_crs = meta["crs"]
-        gdf_mask = transform_mask_crs(image_crs, gdf_mask)
-        out_image, out_transform = apply_mask(tile, gdf_mask)
+        mask_gdf = transform_mask_crs(image_crs, mask_gdf)
+        out_image, out_transform = apply_mask(tile, mask_gdf)
         output_file = f"{tile.stem}-preprocessed{tile.suffix}"
         save_raster_image(output_file, Path(output_folder), out_image, out_transform)
         break
@@ -101,14 +100,14 @@ if __name__ == "__main__":
     from omegaconf import DictConfig
 
     @hydra.main(version_base=None, config_path="../../../configs", config_name="config")
-    def preprocess(cfg: DictConfig) -> None:
+    def preprocess(cfg: DictConfig) -> gpd.GeoDataFrame:
         aoi_bounds = tuple(cfg.preprocessing.masking.aoi_bounds)
         print(aoi_bounds)
         print(type(aoi_bounds))
-        create_mask(
-            src_file=cfg.resources.eez_geodata,
-            out_file=cfg.resources.mask_geodata,
+        mask_gdf = create_mask_gdf(
+            eez_shapefile=cfg.resources.eez_geodata,
             aoi_bounds=tuple(cfg.preprocessing.masking.aoi_bounds),
         )
+        return mask_gdf
 
     preprocess()
