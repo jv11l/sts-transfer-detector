@@ -40,6 +40,20 @@ wheels = [
 ]
 
 [[package]]
+name = "anywidget"
+version = "0.11.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "ipywidgets" },
+    { name = "psygnal" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/79/31/0491d707c674b34267f55d96d6a7148e55e7b6718a271686232cf295fbe2/anywidget-0.11.0.tar.gz", hash = "sha256:6695fbef9449cf8c27f421b96c5837aa37f909ec1f60cfa33add333e1b70b169", size = 426999, upload-time = "2026-04-27T23:42:09.576Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8e/c2/8fec8e8e2eb920cc2280f569144080cd58622a2eda83bfa4c0c354a63264/anywidget-0.11.0-py3-none-any.whl", hash = "sha256:c574d9acc6503ad27b37a9acea48f957a8ba7c9c9876cfcb37898931c098ce9d", size = 317341, upload-time = "2026-04-27T23:42:08.356Z" },
+]
+
+[[package]]
 name = "appnope"
 version = "0.1.4"
 source = { registry = "https://pypi.org/simple" }
@@ -370,15 +384,6 @@ wheels = [
 ]
 
 [[package]]
-name = "colour"
-version = "0.1.5"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a0/d4/5911a7618acddc3f594ddf144ecd8a03c29074a540f4494670ad8f153efe/colour-0.1.5.tar.gz", hash = "sha256:af20120fefd2afede8b001fbef2ea9da70ad7d49fafdb6489025dae8745c3aee", size = 24776, upload-time = "2017-11-19T23:20:08.015Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/74/46/e81907704ab203206769dee1385dc77e1407576ff8f50a0681d0a6b541be/colour-0.1.5-py2.py3-none-any.whl", hash = "sha256:33f6db9d564fadc16e59921a56999b79571160ce09916303d35346dddc17978c", size = 23772, upload-time = "2017-11-19T23:20:04.56Z" },
-]
-
-[[package]]
 name = "comm"
 version = "0.2.3"
 source = { registry = "https://pypi.org/simple" }
@@ -680,11 +685,11 @@ wheels = [
 
 [[package]]
 name = "geemap"
-version = "0.35.3"
+version = "0.37.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "anywidget" },
     { name = "bqplot" },
-    { name = "colour" },
     { name = "earthengine-api" },
     { name = "eerepr" },
     { name = "folium" },
@@ -692,7 +697,6 @@ dependencies = [
     { name = "ipyevents" },
     { name = "ipyfilechooser" },
     { name = "ipyleaflet" },
-    { name = "ipytree" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
@@ -700,11 +704,12 @@ dependencies = [
     { name = "pyperclip" },
     { name = "pyshp" },
     { name = "python-box" },
+    { name = "requests" },
     { name = "scooby" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9d/ab/2b1b2dcd977454ba714f937cdfca540c50a8201d4ef0136e7e990d9f292f/geemap-0.35.3.tar.gz", hash = "sha256:fb5162290bb518116fc2b24bb676b687852707af4bb03a5311e59887fe1187e4", size = 2780557, upload-time = "2025-03-05T21:25:51.726Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ec/b0/86dc7f7e6eeb15b70970e1e62bbedf0e90252502eed2cad95a1e0fc0e314/geemap-0.37.2.tar.gz", hash = "sha256:7e14102047079deed7b54a9e280f94693c6771fce9213cdf538abbff721d4c11", size = 2470580, upload-time = "2026-03-20T20:51:33.163Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/46/97/c9bbd9327c803f4211aa0e34b0401d10add163d1b7cb12548bcb56a731af/geemap-0.35.3-py2.py3-none-any.whl", hash = "sha256:942aafa4778a64cc174d3c477fad49523e71b045a3df1d0597d5027d9ae18e4d", size = 2267586, upload-time = "2025-03-05T21:25:49.966Z" },
+    { url = "https://files.pythonhosted.org/packages/96/4f/fb3392a41254afc656c6dd1ea4b9936a012e451fbe5e934fbda81878a6c3/geemap-0.37.2-py3-none-any.whl", hash = "sha256:be717818f305317302d2be6fb7bbf7dde7dfe8bfa1af71325e745098678a764e", size = 2528877, upload-time = "2026-03-20T20:51:31.05Z" },
 ]
 
 [[package]]
@@ -1087,18 +1092,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ef/4c/5dd1d8af08107f88c7f741ead7a40854b8ac24ddf9ae850afbcf698aa552/ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81", size = 8393, upload-time = "2025-01-17T11:24:34.505Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d9/33/1f075bf72b0b747cb3288d011319aaf64083cf2efef8354174e3ed4540e2/ipython_pygments_lexers-1.1.1-py3-none-any.whl", hash = "sha256:a9462224a505ade19a605f71f8fa63c2048833ce50abc86768a0d81d876dc81c", size = 8074, upload-time = "2025-01-17T11:24:33.271Z" },
-]
-
-[[package]]
-name = "ipytree"
-version = "0.2.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "ipywidgets" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/52/e9/74ab8e327bb884b415124fc5ac2416916499278fef7a628620715ec326ce/ipytree-0.2.2.tar.gz", hash = "sha256:d53d739bbaaa45415733cd06e0dc420a2af3d173438617db472a517bc7a61e56", size = 636289, upload-time = "2022-08-23T15:11:48.429Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e4/03/35cf1742598d784e96153175233318a2332f71863e55ad1007c9264c1a7a/ipytree-0.2.2-py2.py3-none-any.whl", hash = "sha256:744dc1a02c3ec26df8a5ecd87d085a67dc8232a1def6048834403ddcf3b64143", size = 1285067, upload-time = "2022-08-23T15:11:44.214Z" },
 ]
 
 [[package]]
@@ -1955,6 +1948,20 @@ wheels = [
 ]
 
 [[package]]
+name = "psygnal"
+version = "0.15.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/4e/79/20c3e23e75272e9ddf018097cf872ab088bccba978888472656629efa4a3/psygnal-0.15.1.tar.gz", hash = "sha256:f64f62dee2306fc1c22050a59b6c6cdad126e04b0cf50e393ff858a1da719096", size = 123147, upload-time = "2026-01-04T16:38:41.959Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bb/a7/69495410025cc4298765545ce3b8c635cd4c8d3a362b7fbbc15b80e9fc8f/psygnal-0.15.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:1adc41515f648696990964433f1e25d8dfd306813a3645366c85e01986ba57a0", size = 581002, upload-time = "2026-01-04T16:38:12.753Z" },
+    { url = "https://files.pythonhosted.org/packages/75/1f/19a8126ccf3cd3974ba5d08a435a049b666961d90f5848ba83599d7a29de/psygnal-0.15.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:38ff18455b2ac73d4e8eea82ef298ce904b52e4dfdc603a24380c9c440e37519", size = 567775, upload-time = "2026-01-04T16:38:14.04Z" },
+    { url = "https://files.pythonhosted.org/packages/54/c5/b1348880d603edb82128a721397a1ddcf3dfcf5384fe5689db6e471118ae/psygnal-0.15.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c923c322eeefb1140886927cfe7bda7c32341087e290e812b9c69a624ab72d54", size = 855961, upload-time = "2026-01-04T16:38:15.612Z" },
+    { url = "https://files.pythonhosted.org/packages/e6/42/3da2d6f3583bd1a849f7faa2fd3492b14bfda05012519ceaea5992658af0/psygnal-0.15.1-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:2714ddaa41ea3134c0ee91cebd5fb11a88f254ea1d5948806ab0ad5f8be603d5", size = 862721, upload-time = "2026-01-04T16:38:17.059Z" },
+    { url = "https://files.pythonhosted.org/packages/4d/14/6fc7e97fdecf7e8c5c105684bab784920312a3259800d8b53e3cf8783f42/psygnal-0.15.1-cp311-cp311-win_amd64.whl", hash = "sha256:877516056a5a383427a647fff2fad5179eaa3e12de2c083c273e748435414aef", size = 415696, upload-time = "2026-01-04T16:38:18.355Z" },
+    { url = "https://files.pythonhosted.org/packages/46/49/7742544684bee728ec123515d2694cee859aa2a705951a461230b00f18cc/psygnal-0.15.1-py3-none-any.whl", hash = "sha256:4221140e633e45b076953c64bcb9b41a744833527f9a037c1ca98bc270798cbf", size = 90638, upload-time = "2026-01-04T16:38:40.841Z" },
+]
+
+[[package]]
 name = "ptyprocess"
 version = "0.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2527,7 +2534,7 @@ provides-extras = ["dashboard"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "geemap", specifier = ">=0.35.3,<0.36.0" },
+    { name = "geemap", specifier = ">=0.36.0" },
     { name = "ipykernel", specifier = ">=6.30.1,<7.0.0" },
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "matplotlib", specifier = ">=3.10.9" },
