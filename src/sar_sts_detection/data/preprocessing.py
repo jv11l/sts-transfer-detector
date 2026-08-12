@@ -80,20 +80,26 @@ def save_raster_image(
         dest.write(out_image, 1)
 
 
-
 def preprocess_tile(
+    input_file: Path,
+    output_folder: str,
+    mask_gdf: gpd.GeoDataFrame,
+) -> None:
+    _, meta = load_raster_file(input_file)
+    image_crs = meta["crs"]
+    mask_gdf = transform_mask_crs(image_crs, mask_gdf)
+    out_image, out_transform = apply_mask(input_file, mask_gdf)
+    output_file = f"{input_file.stem}-preprocessed{input_file.suffix}"
+    save_raster_image(output_file, Path(output_folder), out_image, out_transform)
+
+
+def preprocess_tiles(
     input_folder: str,
     output_folder: str,
     mask_gdf: gpd.GeoDataFrame,
 ) -> None:
-    for tile in Path(input_folder).iterdir():
-        _, meta = load_raster_file(tile)
-        image_crs = meta["crs"]
-        mask_gdf = transform_mask_crs(image_crs, mask_gdf)
-        out_image, out_transform = apply_mask(tile, mask_gdf)
-        output_file = f"{tile.stem}-preprocessed{tile.suffix}"
-        save_raster_image(output_file, Path(output_folder), out_image, out_transform)
-        break
+    for file in Path(input_folder).iterdir():
+        preprocess_tile(file, output_folder, mask_gdf)
 
 
 if __name__ == "__main__":

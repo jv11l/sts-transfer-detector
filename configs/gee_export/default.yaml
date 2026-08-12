@@ -1,0 +1,19 @@
+sar_data:
+  - collection: COPERNICUS/S1_GRD
+  - instrument_mode: IW
+  - polarization: [VH, VV]
+  - resolution_m: 10
+
+aoi:
+  - description: laconian_gulf
+  - bounds: [22.357, 36.373, 23.114, 36.846]
+
+date_range:
+  - start: "2022-01-01"
+  - end: "2023-12-31"
+
+export:
+  - dest_bucket:
+  - quota: 2
+  - format: GeoTIFF
+  - max_pixeks: 1e9

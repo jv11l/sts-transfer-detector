@@ -1,7 +1,7 @@
 import hydra
 from omegaconf import DictConfig
 
-from sar_sts_detection.data.preprocessing import create_mask_gdf, preprocess_tile
+from sar_sts_detection.data.preprocessing import create_mask_gdf, preprocess_tiles
 
 
 @hydra.main(version_base=None, config_path="../configs", config_name="config")
@@ -12,7 +12,7 @@ def preprocess(cfg: DictConfig) -> None:
         aoi_bounds=tuple(cfg.preprocessing.masking.aoi_bounds),
     )
 
-    preprocess_tile(
+    preprocess_tiles(
         input_folder=cfg.paths.raw_dir,
         output_folder=cfg.paths.masked_dir,
         mask_gdf=mask_gdf,
