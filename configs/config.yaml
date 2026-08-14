@@ -1,9 +1,11 @@
-defaults:
-  - preprocessing: default
-  - _self_
+# defaults:
+#   - gee_export: default
+#   - preprocessing: default
+#   - infra: gcp
+#   - _self_
 
 project:
-  name: sar-ship-detection
+  name: sar-sts-detection
   seed: 42
   root_dir: ${hydra:runtime.cwd}
 

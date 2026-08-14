@@ -1,0 +1,6 @@
+# collection: "COPERNICUS/S1_GRD"
+aoi_name: "laconian_gulf"
+aoi_bounds: [22.357, 36.373, 23.114, 36.846]
+start_date: "2022-01-01"
+end_date: "2023-12-31"
+gcs_bucket: ${oc.env:BUCKET_NAME}
