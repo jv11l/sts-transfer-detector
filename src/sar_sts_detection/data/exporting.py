@@ -1,12 +1,15 @@
 from dataclasses import dataclass, field
+from datetime import datetime
 
 
 @dataclass(frozen=True)
 class S1ExportConfig:
+    """"""
+
     aoi_name: str
     aoi_bounds: tuple[float, float, float, float]  # format (west, south, east, north)
-    start_date: str  # format: 'YYYY-MM-DD
-    end_date: str  # format: 'YYYY-MM-DD
+    start_date: str  # format: 'YYYY-MM-DD (ISO 8601 format)
+    end_date: str  # format: 'YYYY-MM-DD (ISO 8601 format)
     dual_pol: bool = True  # polarisation values: ['VV', 'VH']
     bands: list[str] = field(default_factory=lambda: ["VV", "VH", "angle"])
     gcs_bucket: str | None = None
@@ -15,11 +18,22 @@ class S1ExportConfig:
     file_format: str = "GeoTIFF"
     max_pixels: int = int(1e8)
 
-    # def __post_init__(self):
-    # size of the aoi
-    # lat range: -90 to 90
-    # lon range: -180 to 180
-    # start_date <= end_date
+    def __post_init__(self):
+        """Basic data validation of config parameters"""
+        x_min, y_min, x_max, y_max = self.aoi_bounds
+        if not (-180 < x_min < 180):
+            raise ValueError("Longitude must be between -180 and 180")
+        if not (-180 < x_max < 180):
+            raise ValueError("Longitude must be between -180 and 180")
+        if not (-90 < y_min < 90):
+            raise ValueError("Latitude must be between -90 and 90")
+        if not (-90 < y_max < 90):
+            raise ValueError("Latitude must be between -90 and 90")
+        for date in [self.start_date, self.end_date]:
+            if not datetime.strptime(date, "%Y-%m-%d"):
+                raise ValueError("Date format must be YYYY-MM-DD")
+        if self.start_date > self.end_date:
+            raise ValueError("Start date come before end date")
 
 
 # def filter_image_collection(cfg: S1ExportConfig) -> ee.ImageCollection:
@@ -70,7 +84,8 @@ class S1ExportConfig:
 if __name__ == "__main__":
     import hydra
     from dotenv import load_dotenv
-    from hydra.core.config_store import ConfigStore
+
+    # from hydra.core.config_store import ConfigStore
     from omegaconf import DictConfig
 
     load_dotenv()
@@ -78,22 +93,20 @@ if __name__ == "__main__":
     # ee.Authenticate()
     # ee.Initialize(project=os.getenv("project_id"))
 
-    cs = ConfigStore.instance()
+    # cs = ConfigStore.instance()
 
     @hydra.main(version_base=None, config_path="../../../configs", config_name="s1_export")
     def instantiate_config(cfg: DictConfig) -> None:
         # print(OmegaConf.to_yaml(cfg))
 
         export_cfg = S1ExportConfig(
-            # collection=cfg.collection,
-            aoi_name=cfg.aoi_name,
-            aoi_bounds=tuple(cfg.aoi_bounds),
+            aoi_name=cfg.aoi.name,
+            aoi_bounds=tuple(cfg.aoi.bounds),
             start_date=cfg.start_date,
             end_date=cfg.end_date,
             gcs_bucket=cfg.gcs_bucket,
         )
 
-        print(isinstance(export_cfg, S1ExportConfig))
         print(export_cfg)
 
     instantiate_config()
